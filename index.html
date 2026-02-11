@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sonero - Magazin premium de ceasuri. Comandă ceasuri personalizate, explorează colecțiile exclusive.">
+    <title>Sonero | Ceasuri Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-text">Sonero</span>
+                <span class="logo-accent">.</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#ceasuri">Ceasuri</a></li>
+                <li><a href="#comanda">Comandă Personalizată</a></li>
+                <li><a href="#noutati">Noutăți & Promoții</a></li>
+                <li><a href="#admin" class="admin-link" data-admin-trigger>Admin</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Meniu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+            <div class="hero-particles" id="particles"></div>
+            <div class="hero-grid"></div>
+        </div>
+        <div class="hero-content">
+            <p class="hero-badge" data-animate>Colecția 2025</p>
+            <h1 class="hero-title" data-animate>
+                <span class="title-line">Timeless</span>
+                <span class="title-line accent">Elegance</span>
+            </h1>
+            <p class="hero-desc" data-animate>Descoperă ceasuri de excepție, create pentru cei care apreciază rafinamentul și precizia. Fiecare secundă contează.</p>
+            <div class="hero-cta" data-animate>
+                <a href="#ceasuri" class="btn btn-primary">Explorează Colecția</a>
+                <a href="#comanda" class="btn btn-outline">Comandă Personalizată</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-indicator"></div>
+        </div>
+    </header>
+
+    <!-- Watches Section -->
+    <section id="ceasuri" class="section watches-section">
+        <div class="container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">Colecția Noastră</span>
+                <h2 class="section-title">Ceasuri de Excepție</h2>
+                <p class="section-desc">Fiecare piesă este o operă de artă, combinând tehnică de ultimă generație cu design atemporal.</p>
+            </div>
+            <div class="watches-grid" id="watchesGrid">
+                <!-- Watches loaded dynamically -->
+                <div class="watches-placeholder" id="watchesPlaceholder">
+                    <p>Nu există ceasuri adăugate încă. Folosește secțiunea Admin pentru a adăuga produse.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Order Section -->
+    <section id="comanda" class="section order-section">
+        <div class="container">
+            <div class="order-layout">
+                <div class="order-info" data-animate>
+                    <span class="section-tag">Comandă Personalizată</span>
+                    <h2 class="section-title">Comandă Ceasul Tău Ideal</h2>
+                    <p>Nu găsești ce cauți? Comandă un ceas personalizat. Spune-ne preferințele tale și vom crea o piesă unică, făcută exact pentru tine.</p>
+                    <ul class="order-features">
+                        <li><span class="feature-icon">✦</span> Design personalizat</li>
+                        <li><span class="feature-icon">✦</span> Materiale premium</li>
+                        <li><span class="feature-icon">✦</span> Consultanță gratuită</li>
+                    </ul>
+                </div>
+                <form class="order-form" id="orderForm" data-animate>
+                    <div class="form-group">
+                        <label for="orderName">Nume complet *</label>
+                        <input type="text" id="orderName" name="name" required placeholder="Ex: Ion Popescu"
+                            autocomplete="name" minlength="2">
+                        <span class="form-error" data-error="name"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderEmail">Email *</label>
+                            <input type="email" id="orderEmail" name="email" required placeholder="email@exemplu.ro"
+                                autocomplete="email">
+                            <span class="form-error" data-error="email"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderPhone">Telefon *</label>
+                            <input type="tel" id="orderPhone" name="phone" required placeholder="07xx xxx xxx"
+                                autocomplete="tel">
+                            <span class="form-error" data-error="phone"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderType">Tip ceas preferat</label>
+                        <select id="orderType" name="type">
+                            <option value="clasic">Clasic</option>
+                            <option value="sport">Sport</option>
+                            <option value="luxury">Luxury</option>
+                            <option value="smart">Smartwatch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderDetails">Detalii cerere *</label>
+                        <textarea id="orderDetails" name="details" required rows="4"
+                            placeholder="Descrie ceasul dorit: material, culoare, funcții speciale..."></textarea>
+                        <span class="form-error" data-error="details"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Trimite Cererea</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Promotions Section -->
+    <section id="noutati" class="section news-section">
+        <div class="container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">Stai la curent</span>
+                <h2 class="section-title">Noutăți & Promoții</h2>
+                <p class="section-desc">Fii primul care află despre lansări noi, reduceri exclusive și evenimente speciale.</p>
+            </div>
+            <div class="news-grid" id="newsGrid">
+                <div class="news-placeholder" id="newsPlaceholder">
+                    <p>Nu există noutăți. Folosește secțiunea Admin pentru a adăuga promoții și știri.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel Modal -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h3>Panou Admin</h3>
+                <button class="admin-close" id="adminClose" aria-label="Închide">×</button>
+            </div>
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="watches">Adaugă Ceasuri</button>
+                <button class="admin-tab" data-tab="news">Adaugă Noutăți</button>
+            </div>
+            <div class="admin-content">
+                <!-- Add Watch Form -->
+                <div class="admin-tab-content active" id="tabWatches">
+                    <form class="admin-form" id="addWatchForm">
+                        <div class="form-group">
+                            <label>Nume ceas *</label>
+                            <input type="text" name="watchName" required placeholder="Ex: Sonero Classic Gold">
+                        </div>
+                        <div class="form-group">
+                            <label>Preț (RON) *</label>
+                            <input type="number" name="watchPrice" required placeholder="1500" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>URL Imagine *</label>
+                            <input type="url" name="watchImage" required placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Descriere</label>
+                            <textarea name="watchDesc" rows="3" placeholder="Descriere scurtă..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adaugă Ceas</button>
+                    </form>
+                </div>
+                <!-- Add News Form -->
+                <div class="admin-tab-content" id="tabNews">
+                    <form class="admin-form" id="addNewsForm">
+                        <div class="form-group">
+                            <label>Titlu *</label>
+                            <input type="text" name="newsTitle" required placeholder="Ex: Reducere de Black Friday">
+                        </div>
+                        <div class="form-group">
+                            <label>Tip</label>
+                            <select name="newsType">
+                                <option value="noutate">Noutate</option>
+                                <option value="promotie">Promoție</option>
+                                <option value="lansare">Lansare</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriere *</label>
+                            <textarea name="newsDesc" required rows="3" placeholder="Conținutul noutății..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Data (opțional)</label>
+                            <input type="date" name="newsDate">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adaugă Noutate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-text">Sonero</span><span class="logo-accent">.</span>
+                    <p>Ceasuri de excepție pentru momente de neuitat.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#ceasuri">Ceasuri</a>
+                    <a href="#comanda">Comandă</a>
+                    <a href="#noutati">Noutăți</a>
+                </div>
+                <div class="footer-contact">
+                    <p>Contact: contact@sonero.ro</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sonero. Toate drepturile rezervate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js" type="module"></script>
+</body>
+</html>
