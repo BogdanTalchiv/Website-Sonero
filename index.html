@@ -17,7 +17,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">
+            <a href="#" class="logo" id="adminUnlockLogo" title="Sonero">
                 <span class="logo-text">Sonero</span>
                 <span class="logo-accent">.</span>
             </a>
@@ -25,7 +25,10 @@
                 <li><a href="#ceasuri">Ceasuri</a></li>
                 <li><a href="#comanda">Comandă Personalizată</a></li>
                 <li><a href="#noutati">Noutăți & Promoții</a></li>
-                <li><a href="#admin" class="admin-link" data-admin-trigger>Admin</a></li>
+                <li><a href="#recenzii">Recenzii</a></li>
+                <li><a href="#faq">F&Q</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="admin-nav-item" id="adminNavItem" style="display: none;"><a href="#admin" class="admin-link" data-admin-trigger>Admin</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Meniu">
                 <span></span>
@@ -152,6 +155,139 @@
         </div>
     </section>
 
+    <!-- Reviews Section -->
+    <section id="recenzii" class="section reviews-section">
+        <div class="container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">Clienții noștri</span>
+                <h2 class="section-title">Recenzii</h2>
+                <p class="section-desc">Ce spun clienții despre ceasurile Sonero și experiența lor.</p>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card" data-animate>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Ceasul Sonero Classic Gold a depășit așteptările. Calitate excelentă, livrare rapidă. Recomand cu căldură!"</p>
+                    <div class="review-author">
+                        <strong>Andrei M.</strong>
+                        <span>Client verificat</span>
+                    </div>
+                </div>
+                <div class="review-card" data-animate>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Servicii de top. Am primit consultanță personalizată și am găsit ceasul perfect pentru ocazii de business."</p>
+                    <div class="review-author">
+                        <strong>Elena P.</strong>
+                        <span>Client verificat</span>
+                    </div>
+                </div>
+                <div class="review-card" data-animate>
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Design rafinat, materiale de calitate. Vizualizarea 360° m-a ajutat să văd fiecare detaliu înainte de comandă."</p>
+                    <div class="review-author">
+                        <strong>Mihai C.</strong>
+                        <span>Client verificat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section faq-section">
+        <div class="container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">Întrebări frecvente</span>
+                <h2 class="section-title">F&Q</h2>
+                <p class="section-desc">Răspunsuri la cele mai comune întrebări despre ceasurile și serviciile Sonero.</p>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item" data-animate>
+                    <summary>Cum pot comanda un ceas personalizat?</summary>
+                    <p>Completează formularul „Comandă Personalizată” cu preferințele tale (tip, material, culoare, funcții speciale) și te vom contacta în cel mai scurt timp pentru a discuta detalii și a finaliza comanda.</p>
+                </details>
+                <details class="faq-item" data-animate>
+                    <summary>Care sunt metodele de plată acceptate?</summary>
+                    <p>Acceptăm plăți prin transfer bancar, card și plata la livrare (în funcție de disponibilitate). Detalii precise vor fi comunicate la confirmarea comenzii.</p>
+                </details>
+                <details class="faq-item" data-animate>
+                    <summary>Livrați în afara Moldovei?</summary>
+                    <p>Da, livrăm în întreaga Republică Moldova. Pentru livrări internaționale, contactează-ne pentru a verifica disponibilitatea și costurile.</p>
+                </details>
+                <details class="faq-item" data-animate>
+                    <summary>Oferiți garanție pentru ceasuri?</summary>
+                    <p>Da, toate ceasurile Sonero beneficiază de garanție. Durata și condițiile variază în funcție de model – te informăm la achiziție.</p>
+                </details>
+                <details class="faq-item" data-animate>
+                    <summary>Cât durează livrarea?</summary>
+                    <p>În Chișinău și zonele apropiate livrarea durează în general 1-2 zile. Pentru alte localități, termenul este de 3-5 zile lucrătoare.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header" data-animate>
+                <span class="section-tag">Contactează-ne</span>
+                <h2 class="section-title">Suntem aici pentru tine</h2>
+                <p class="section-desc">Ai întrebări despre ceasuri? Vrei să comanzi sau să afli mai multe? Contactează-ne oricând.</p>
+            </div>
+            <div class="contact-grid">
+                <a href="mailto:contact@sonero.ro" class="contact-card">
+                    <span class="contact-icon">✉</span>
+                    <h3>Email</h3>
+                    <p>contact@sonero.ro</p>
+                </a>
+                <a href="https://t.me/soneromd" target="_blank" rel="noopener" class="contact-card">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                    </span>
+                    <h3>Telegram</h3>
+                    <p>@soneromd</p>
+                </a>
+                <a href="https://wa.me/37361081424?text=Bun%C4%83!%20Sunt%20interesat%20de%20colec%C8%99ia%20Sonero%20-%20a%C5%9F%20dori%20mai%20multe%20informa%C8%9Bii." target="_blank" rel="noopener" class="contact-card">
+                    <span class="contact-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </span>
+                    <h3>WhatsApp</h3>
+                    <p>+373 610 81 424</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Chat Island -->
+    <div class="chat-island" id="chatIsland">
+        <button class="chat-island-close" id="chatIslandClose" aria-label="Închide">×</button>
+        <div class="chat-island-icons">
+            <a href="https://t.me/soneromd" target="_blank" rel="noopener" class="chat-island-btn" title="Telegram" aria-label="Telegram">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            </a>
+            <a href="https://wa.me/37361081424?text=Bun%C4%83!%20Sunt%20interesat%20de%20colec%C8%99ia%20Sonero%20-%20a%C5%9F%20dori%20mai%20multe%20informa%C8%9Bii." target="_blank" rel="noopener" class="chat-island-btn" title="WhatsApp" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- 360° Product View Modal -->
+    <div class="view360-overlay" id="view360Overlay">
+        <div class="view360-modal">
+            <button class="view360-close" id="view360Close" aria-label="Închide">×</button>
+            <div class="view360-container">
+                <div class="view360-stage" id="view360Stage">
+                    <div class="view360-image-wrapper" id="view360ImageWrapper">
+                        <img id="view360Image" src="" alt="">
+                    </div>
+                </div>
+                <div class="view360-controls">
+                    <span class="view360-hint">← Rotire: drag | Zoom: scroll</span>
+                </div>
+            </div>
+            <div class="view360-info" id="view360Info"></div>
+        </div>
+    </div>
+
     <!-- Admin Panel Modal -->
     <div class="admin-overlay" id="adminOverlay">
         <div class="admin-panel">
@@ -185,6 +321,10 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Adaugă Ceas</button>
                     </form>
+                    <div class="admin-list-section">
+                        <h4>Ceasuri existente</h4>
+                        <div class="admin-list" id="adminWatchesList"></div>
+                    </div>
                 </div>
                 <!-- Add News Form -->
                 <div class="admin-tab-content" id="tabNews">
@@ -211,6 +351,10 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Adaugă Noutate</button>
                     </form>
+                    <div class="admin-list-section">
+                        <h4>Noutăți existente</h4>
+                        <div class="admin-list" id="adminNewsList"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,9 +375,13 @@
                     <a href="#ceasuri">Ceasuri</a>
                     <a href="#comanda">Comandă</a>
                     <a href="#noutati">Noutăți</a>
+                    <a href="#recenzii">Recenzii</a>
+                    <a href="#faq">F&Q</a>
+                    <a href="#contact">Contact</a>
                 </div>
                 <div class="footer-contact">
-                    <p>Contact: contact@sonero.ro</p>
+                    <a href="mailto:contact@sonero.ro" class="footer-contact-link">contact@sonero.ro</a>
+                    <a href="tel:+37361081424" class="footer-contact-link">+373 610 81 424</a>
                 </div>
             </div>
             <div class="footer-bottom">

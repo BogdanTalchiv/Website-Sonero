@@ -91,9 +91,16 @@ const createWatchCard = (watch) => {
     const div = document.createElement('article');
     div.className = 'watch-card';
     div.setAttribute('data-animate', '');
+    const mainImg = watch.images?.[0] || watch.image;
     div.innerHTML = `
-        <img src="${escapeHtml(watch.image)}" alt="${escapeHtml(watch.name)}" class="watch-image" loading="lazy"
-             onerror="this.src='https://via.placeholder.com/400?text=Sonero'">
+        <div class="watch-card-image-wrap">
+            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(watch.name)}" class="watch-image" loading="lazy"
+                 onerror="this.src='https://via.placeholder.com/400?text=Sonero'">
+            <button class="watch-360-btn" aria-label="Vizualizare 360°" data-watch-id="${watch.id}">
+                <span class="icon-360">360°</span>
+                <span>Rotire</span>
+            </button>
+        </div>
         <div class="watch-info">
             <h3 class="watch-name">${escapeHtml(watch.name)}</h3>
             <p class="watch-desc">${escapeHtml(watch.desc || '')}</p>
@@ -159,6 +166,7 @@ function renderWatches(watches) {
     });
 
     observeAnimate();
+    initView360Handlers();
 }
 
 function addWatch(data) {
@@ -173,7 +181,18 @@ function addWatch(data) {
     watches.push(newWatch);
     storage.set(STORAGE_KEYS.WATCHES, watches);
     renderWatches(watches);
+    renderAdminWatches();
     toast.show('Ceas adăugat cu succes!');
+}
+
+function deleteWatch(id) {
+    if (!confirm('Sigur vrei să ștergi acest ceas?')) return;
+    let watches = storage.get(STORAGE_KEYS.WATCHES);
+    watches = watches.filter(w => w.id !== id);
+    storage.set(STORAGE_KEYS.WATCHES, watches);
+    renderWatches(watches);
+    renderAdminWatches();
+    toast.show('Ceas șters.');
 }
 
 // ========== News Logic ==========
@@ -220,7 +239,18 @@ function addNews(data) {
     news.unshift(newItem);
     storage.set(STORAGE_KEYS.NEWS, news);
     renderNews(news);
+    renderAdminNews();
     toast.show('Noutate adăugată cu succes!');
+}
+
+function deleteNews(id) {
+    if (!confirm('Sigur vrei să ștergi această noutate?')) return;
+    let news = storage.get(STORAGE_KEYS.NEWS);
+    news = news.filter(n => n.id !== id);
+    storage.set(STORAGE_KEYS.NEWS, news);
+    renderNews(news);
+    renderAdminNews();
+    toast.show('Noutate ștearsă.');
 }
 
 // ========== Orders Logic ==========
@@ -288,7 +318,98 @@ function clearFormErrors(form) {
     form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
 }
 
+// ========== Admin Access (hidden from regular clients) ==========
+const ADMIN_STORAGE_KEY = 'sonero_admin_unlocked';
+const ADMIN_SECRET = 'sonero';
+const LOGO_CLICKS_NEEDED = 5;
+const LOGO_CLICK_TIMEOUT = 4000;
+
+function initAdminAccess() {
+    const adminNavItem = document.getElementById('adminNavItem');
+    const logo = document.getElementById('adminUnlockLogo');
+
+    function isUnlocked() {
+        return sessionStorage.getItem(ADMIN_STORAGE_KEY) === '1';
+    }
+
+    function checkUrlSecret() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('admin') === ADMIN_SECRET) {
+            sessionStorage.setItem(ADMIN_STORAGE_KEY, '1');
+            history.replaceState({}, '', window.location.pathname);
+            return true;
+        }
+        return false;
+    }
+
+    function unlock() {
+        sessionStorage.setItem(ADMIN_STORAGE_KEY, '1');
+        if (adminNavItem) adminNavItem.style.display = '';
+        toast.show('Acces Admin activat.');
+    }
+
+    checkUrlSecret();
+    if (isUnlocked() && adminNavItem) adminNavItem.style.display = '';
+
+    let logoClickCount = 0;
+    let logoClickTimer = null;
+
+    logo?.addEventListener('click', () => {
+        if (isUnlocked()) return;
+        logoClickCount++;
+        clearTimeout(logoClickTimer);
+        logoClickTimer = setTimeout(() => { logoClickCount = 0; }, LOGO_CLICK_TIMEOUT);
+        if (logoClickCount >= LOGO_CLICKS_NEEDED) {
+            logoClickCount = 0;
+            unlock();
+        }
+    });
+}
+
 // ========== Admin Panel ==========
+function renderAdminWatches() {
+    const container = document.getElementById('adminWatchesList');
+    if (!container) return;
+    const watches = storage.get(STORAGE_KEYS.WATCHES);
+    container.innerHTML = watches.length === 0
+        ? '<p class="admin-list-empty">Niciun ceas adăugat.</p>'
+        : watches.map(w => `
+            <div class="admin-list-item" data-id="${w.id}">
+                <div class="admin-list-item-info">
+                    <img src="${escapeHtml(w.image)}" alt="" class="admin-list-thumb" onerror="this.style.display='none'">
+                    <div>
+                        <strong>${escapeHtml(w.name)}</strong>
+                        <span>${formatPrice(w.price)} RON</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-delete" data-watch-id="${w.id}" title="Șterge">×</button>
+            </div>
+        `).join('');
+    container.querySelectorAll('.btn-delete[data-watch-id]').forEach(btn => {
+        btn.onclick = () => deleteWatch(btn.dataset.watchId);
+    });
+}
+
+function renderAdminNews() {
+    const container = document.getElementById('adminNewsList');
+    if (!container) return;
+    const news = storage.get(STORAGE_KEYS.NEWS);
+    container.innerHTML = news.length === 0
+        ? '<p class="admin-list-empty">Nicio noutate.</p>'
+        : news.map(n => `
+            <div class="admin-list-item">
+                <div class="admin-list-item-info">
+                    <strong>${escapeHtml(n.title)}</strong>
+                    <span class="admin-list-badge">${n.type}</span>
+                </div>
+                <button type="button" class="btn-delete" data-news-id="${n.id}" title="Șterge">×</button>
+            </div>
+        `).join('');
+    container.querySelectorAll('.btn-delete[data-news-id]').forEach(btn => {
+        btn.onclick = () => deleteNews(btn.dataset.newsId);
+    });
+}
+
 const admin = {
     overlay: null,
 
@@ -314,6 +435,8 @@ const admin = {
 
     open() {
         this.overlay?.classList.add('active');
+        renderAdminWatches();
+        renderAdminNews();
     },
 
     close() {
@@ -471,11 +594,140 @@ function initAddNewsForm() {
     });
 }
 
+// ========== 360° Product View ==========
+function initView360Handlers() {
+    document.querySelectorAll('.watch-360-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            openView360(btn.dataset.watchId);
+        };
+    });
+}
+
+function openView360(watchId) {
+    const watches = storage.get(STORAGE_KEYS.WATCHES);
+    const watch = watches.find(w => w.id === watchId);
+    if (!watch) return;
+
+    const overlay = document.getElementById('view360Overlay');
+    const img = document.getElementById('view360Image');
+    const info = document.getElementById('view360Info');
+
+    const images = watch.images && watch.images.length >= 2 ? watch.images : [watch.image];
+    img.src = images[0];
+    img.alt = watch.name;
+    info.innerHTML = `
+        <h3>${escapeHtml(watch.name)}</h3>
+        <p>${escapeHtml(watch.desc || '')}</p>
+        <p class="view360-price">${formatPrice(watch.price)} RON</p>
+    `;
+
+    overlay.classList.add('active');
+    setupView360Drag(img, images);
+}
+
+function setupView360Drag(imgEl, images = []) {
+    const wrapper = imgEl?.closest('.view360-image-wrapper');
+    if (!wrapper) return;
+
+    let rotationY = 0;
+    let scale = 1;
+    let isDragging = false;
+    let startX = 0, startRotY = 0;
+    const hasMultipleImages = images && images.length >= 2;
+
+    function updateView() {
+        wrapper.style.transform = `perspective(800px) rotateY(${rotationY}deg) scale(${scale})`;
+        if (hasMultipleImages) {
+            const normalized = ((rotationY % 360) + 360) % 360;
+            imgEl.src = normalized < 180 ? images[0] : images[1];
+        }
+    }
+
+    wrapper.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startRotY = rotationY;
+    });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        rotationY = startRotY + (e.clientX - startX);
+        updateView();
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; });
+
+    wrapper.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startRotY = rotationY;
+    });
+    wrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        rotationY = startRotY + (e.touches[0].clientX - startX);
+        updateView();
+    });
+    wrapper.addEventListener('touchend', () => { isDragging = false; });
+
+    const stage = document.getElementById('view360Stage');
+    stage?.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        scale = Math.max(0.5, Math.min(2, scale - e.deltaY * 0.002));
+        updateView();
+    }, { passive: false });
+
+    updateView();
+}
+
+function initView360Modal() {
+    const overlay = document.getElementById('view360Overlay');
+    const closeBtn = document.getElementById('view360Close');
+
+    closeBtn?.addEventListener('click', () => overlay?.classList.remove('active'));
+    overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay?.classList.contains('active')) overlay.classList.remove('active');
+    });
+}
+
+// ========== Chat Island (Floating) ==========
+function initChatIsland() {
+    const island = document.getElementById('chatIsland');
+    const closeBtn = document.getElementById('chatIslandClose');
+    const SCROLL_THRESHOLD = 300;
+    const STORAGE_KEY = 'sonero_chat_island_closed';
+
+    function showIsland() {
+        if (sessionStorage.getItem(STORAGE_KEY)) return;
+        island?.classList.add('visible');
+    }
+
+    function hideIsland() {
+        island?.classList.remove('visible');
+    }
+
+    window.addEventListener('scroll', () => {
+        if (sessionStorage.getItem(STORAGE_KEY)) return;
+        if (window.scrollY > SCROLL_THRESHOLD) {
+            showIsland();
+        } else {
+            hideIsland();
+        }
+    });
+
+    closeBtn?.addEventListener('click', () => {
+        hideIsland();
+        sessionStorage.setItem(STORAGE_KEY, '1');
+    });
+}
+
 // ========== Init ==========
 document.addEventListener('DOMContentLoaded', () => {
     loadWatches();
     loadNews();
     observeAnimate();
+    initAdminAccess();
     admin.init();
     initCursorGlow();
     initParticles();
@@ -483,4 +735,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initOrderForm();
     initAddWatchForm();
     initAddNewsForm();
+    initView360Modal();
+    initChatIsland();
 });
