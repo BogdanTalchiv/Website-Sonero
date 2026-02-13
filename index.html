@@ -74,7 +74,7 @@
             <div class="watches-grid" id="watchesGrid">
                 <!-- Watches loaded dynamically -->
                 <div class="watches-placeholder" id="watchesPlaceholder">
-                    <p>Nu există ceasuri adăugate încă. Folosește secțiunea Admin pentru a adăuga produse.</p>
+                    <p>Nu există ceasuri disponibile momentan. Revino curând!</p>
                 </div>
             </div>
         </div>
@@ -295,39 +295,9 @@
                 <h3>Panou Admin</h3>
                 <button class="admin-close" id="adminClose" aria-label="Închide">×</button>
             </div>
-            <div class="admin-tabs">
-                <button class="admin-tab active" data-tab="watches">Adaugă Ceasuri</button>
-                <button class="admin-tab" data-tab="news">Adaugă Noutăți</button>
-            </div>
             <div class="admin-content">
-                <!-- Add Watch Form -->
-                <div class="admin-tab-content active" id="tabWatches">
-                    <form class="admin-form" id="addWatchForm">
-                        <div class="form-group">
-                            <label>Nume ceas *</label>
-                            <input type="text" name="watchName" required placeholder="Ex: Sonero Classic Gold">
-                        </div>
-                        <div class="form-group">
-                            <label>Preț (RON) *</label>
-                            <input type="number" name="watchPrice" required placeholder="1500" min="1">
-                        </div>
-                        <div class="form-group">
-                            <label>URL Imagine *</label>
-                            <input type="url" name="watchImage" required placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Descriere</label>
-                            <textarea name="watchDesc" rows="3" placeholder="Descriere scurtă..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Adaugă Ceas</button>
-                    </form>
-                    <div class="admin-list-section">
-                        <h4>Ceasuri existente</h4>
-                        <div class="admin-list" id="adminWatchesList"></div>
-                    </div>
-                </div>
                 <!-- Add News Form -->
-                <div class="admin-tab-content" id="tabNews">
+                <div class="admin-tab-content active" id="tabNews">
                     <form class="admin-form" id="addNewsForm">
                         <div class="form-group">
                             <label>Titlu *</label>

@@ -32,6 +32,105 @@ const DEFAULT_WATCHES = [
         price: 1290,
         image: 'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600',
         desc: 'Design minimalist, elegante pentru fiecare zi.'
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Vendôme',
+        price: 3850,
+        images: ['ceas 2.jpg', 'ceas 22.jpg', 'ceas222.jpg'],
+        image: 'ceas 2.jpg',
+        desc: 'Ceas automat premium cu cadran negru, curea din cauciuc texturat. Mișcare mecanicismă vizibilă prin spatele transparent.',
+        tags: ['luxury', 'trending', 'elegant', 'metal']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Royal Oak Skeleton',
+        price: 12500,
+        images: ['ceas3.jpg', 'ceas33.jpg', 'ceas333.jpg', 'ceas3333.jpg', 'ceas33333.jpg'],
+        image: 'ceas3.jpg',
+        desc: 'Cadran skeleton cu mișcare vizibilă. Design Audemars Piguet inspirat, carcasă octagonală cu 8 șuruburi.',
+        tags: ['luxury', 'trending', 'elegant', 'metal']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Cartier Chrono',
+        price: 8900,
+        images: ['ceas4.jpg', 'ceas44.jpg', 'ceas444.jpg', 'ceas4444.jpg'],
+        image: 'ceas4.jpg',
+        desc: 'Cronograf cu carcasă pătrată argintie, cadran alb, numerale romane. Cureaua din piele de aligator.',
+        tags: ['luxury', 'elegant', 'business', 'leather']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Casino',
+        price: 15500,
+        images: ['ceas5.jpg', 'ceas55.jpg', 'ceas 555.jpg', 'ceas5555.jpg'],
+        image: 'ceas5.jpg',
+        desc: 'Design unic inspirat de roata de ruletă. Cadran negru cu numerale roșii și negre. Cureaua din piele de crocodil.',
+        tags: ['luxury', 'trending', 'elegant', 'leather']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Clubmaster',
+        price: 1650,
+        images: ['ceas6.jpg', 'ceas66.jpg', 'ceas 666.jpg'],
+        image: 'ceas6.jpg',
+        desc: 'Stil vintage cu carcasă din carapace de broască. Cadran negru, curea NATO. Rezistență 100m.',
+        tags: ['sport', 'casual', 'trending']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Endurance Pro',
+        price: 4200,
+        images: ['ceas7.jpg', 'ceas77.jpg', 'ceas777.jpg'],
+        image: 'ceas7.jpg',
+        desc: 'Cronograf sportiv cu cadran galben vibrant. Caracasă și bezel negre, curea din cauciuc galben.',
+        tags: ['sport', 'trending', 'casual']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Square Bang',
+        price: 18900,
+        images: ['ceas8.jpg', 'ceas88.jpg', 'ceas888.jpg', 'ceas8888.jpg'],
+        image: 'ceas8.jpg',
+        desc: 'Cadran skeleton, carcasă pătrată cu bezel albastru metalic. Ediție limitată Hublot inspirat.',
+        tags: ['luxury', 'trending', 'sport', 'metal']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Datejust',
+        price: 11500,
+        images: ['ceas9.jpg', 'ceas99.jpg', 'ceas999.jpg', 'ceas9999.jpg'],
+        image: 'ceas9.jpg',
+        desc: 'Cadran gri cu numerale arabe verzi. Bezelfluted, brățară Jubilee. Design Rolex inspirat.',
+        tags: ['luxury', 'elegant', 'business', 'metal']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Breguet Style',
+        price: 12800,
+        images: ['ceas10.jpg', 'ceas1010.jpg'],
+        image: 'ceas10.jpg',
+        desc: 'Carcasă ovală cu diamante pe bezel. Cadran alb cu numerale romane. Mâini stil Breguet.',
+        tags: ['luxury', 'elegant', 'metal']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Patek Philippe Style',
+        price: 24500,
+        images: ['ceas20.jpg', 'ceas2020.jpg', 'ceas202020.jpg', 'ceas20202020.jpg', 'ceas2020202020.jpg', 'ceas202020202020.jpg'],
+        image: 'ceas20.jpg',
+        desc: 'Complicații multiple: cronograf, fază lunară, calendăr. Cadran negru, curea din piele.',
+        tags: ['luxury', 'elegant', 'business', 'leather']
+    },
+    {
+        id: crypto.randomUUID(),
+        name: 'Sonero Royal Oak Offshore',
+        price: 16800,
+        images: ['ceas30.jpg', 'ceas3030.jpg', 'ceas303030.jpg', 'ceas30303030.jpg'],
+        image: 'ceas30.jpg',
+        desc: 'Carcasă roz-aurie octagonală, dial Méga Tapisserie. Cronograf cu curea din cauciuc negru.',
+        tags: ['luxury', 'sport', 'trending', 'metal']
     }
 ];
 
@@ -143,6 +242,27 @@ function loadWatches() {
         watches = DEFAULT_WATCHES;
         storage.set(STORAGE_KEYS.WATCHES, watches);
     }
+    const newWatches = [
+        { name: 'Sonero Vendôme', w: { name: 'Sonero Vendôme', price: 3850, images: ['ceas 2.jpg', 'ceas 22.jpg', 'ceas222.jpg'], image: 'ceas 2.jpg', desc: 'Ceas automat premium cu cadran negru, curea din cauciuc texturat.', tags: ['luxury', 'trending', 'elegant', 'metal'] }},
+        { name: 'Sonero Royal Oak Skeleton', w: { name: 'Sonero Royal Oak Skeleton', price: 12500, images: ['ceas3.jpg', 'ceas33.jpg', 'ceas333.jpg', 'ceas3333.jpg', 'ceas33333.jpg'], image: 'ceas3.jpg', desc: 'Cadran skeleton cu mișcare vizibilă. Design Audemars Piguet inspirat.', tags: ['luxury', 'trending', 'elegant', 'metal'] }},
+        { name: 'Sonero Cartier Chrono', w: { name: 'Sonero Cartier Chrono', price: 8900, images: ['ceas4.jpg', 'ceas44.jpg', 'ceas444.jpg', 'ceas4444.jpg'], image: 'ceas4.jpg', desc: 'Cronograf cu carcasă pătrată argintie, cadran alb.', tags: ['luxury', 'elegant', 'business', 'leather'] }},
+        { name: 'Sonero Casino', w: { name: 'Sonero Casino', price: 15500, images: ['ceas5.jpg', 'ceas55.jpg', 'ceas 555.jpg', 'ceas5555.jpg'], image: 'ceas5.jpg', desc: 'Design unic inspirat de roata de ruletă.', tags: ['luxury', 'trending', 'elegant', 'leather'] }},
+        { name: 'Sonero Clubmaster', w: { name: 'Sonero Clubmaster', price: 1650, images: ['ceas6.jpg', 'ceas66.jpg', 'ceas 666.jpg'], image: 'ceas6.jpg', desc: 'Stil vintage cu carcasă din carapace de broască.', tags: ['sport', 'casual', 'trending'] }},
+        { name: 'Sonero Endurance Pro', w: { name: 'Sonero Endurance Pro', price: 4200, images: ['ceas7.jpg', 'ceas77.jpg', 'ceas777.jpg'], image: 'ceas7.jpg', desc: 'Cronograf sportiv cu cadran galben vibrant.', tags: ['sport', 'trending', 'casual'] }},
+        { name: 'Sonero Square Bang', w: { name: 'Sonero Square Bang', price: 18900, images: ['ceas8.jpg', 'ceas88.jpg', 'ceas888.jpg', 'ceas8888.jpg'], image: 'ceas8.jpg', desc: 'Cadran skeleton, carcasă pătrată cu bezel albastru.', tags: ['luxury', 'trending', 'sport', 'metal'] }},
+        { name: 'Sonero Datejust', w: { name: 'Sonero Datejust', price: 11500, images: ['ceas9.jpg', 'ceas99.jpg', 'ceas999.jpg', 'ceas9999.jpg'], image: 'ceas9.jpg', desc: 'Cadran gri cu numerale arabe verzi. Bezelfluted.', tags: ['luxury', 'elegant', 'business', 'metal'] }},
+        { name: 'Sonero Breguet Style', w: { name: 'Sonero Breguet Style', price: 12800, images: ['ceas10.jpg', 'ceas1010.jpg'], image: 'ceas10.jpg', desc: 'Carcasă ovală cu diamante pe bezel.', tags: ['luxury', 'elegant', 'metal'] }},
+        { name: 'Sonero Patek Philippe Style', w: { name: 'Sonero Patek Philippe Style', price: 24500, images: ['ceas20.jpg', 'ceas2020.jpg', 'ceas202020.jpg', 'ceas20202020.jpg', 'ceas2020202020.jpg', 'ceas202020202020.jpg'], image: 'ceas20.jpg', desc: 'Complicații multiple: cronograf, fază lunară.', tags: ['luxury', 'elegant', 'business', 'leather'] }},
+        { name: 'Sonero Royal Oak Offshore', w: { name: 'Sonero Royal Oak Offshore', price: 16800, images: ['ceas30.jpg', 'ceas3030.jpg', 'ceas303030.jpg', 'ceas30303030.jpg'], image: 'ceas30.jpg', desc: 'Carcasă roz-aurie octagonală, dial Méga Tapisserie.', tags: ['luxury', 'sport', 'trending', 'metal'] }}
+    ];
+    let added = false;
+    newWatches.forEach(({ name, w }) => {
+        if (!watches.some(x => x.name === name)) {
+            watches = [...watches, { id: crypto.randomUUID(), ...w }];
+            added = true;
+        }
+    });
+    if (added) storage.set(STORAGE_KEYS.WATCHES, watches);
     renderWatches(watches);
 }
 
@@ -169,31 +289,6 @@ function renderWatches(watches) {
     initView360Handlers();
 }
 
-function addWatch(data) {
-    const watches = storage.get(STORAGE_KEYS.WATCHES);
-    const newWatch = {
-        id: crypto.randomUUID(),
-        name: data.watchName,
-        price: Number(data.watchPrice),
-        image: data.watchImage,
-        desc: data.watchDesc || ''
-    };
-    watches.push(newWatch);
-    storage.set(STORAGE_KEYS.WATCHES, watches);
-    renderWatches(watches);
-    renderAdminWatches();
-    toast.show('Ceas adăugat cu succes!');
-}
-
-function deleteWatch(id) {
-    if (!confirm('Sigur vrei să ștergi acest ceas?')) return;
-    let watches = storage.get(STORAGE_KEYS.WATCHES);
-    watches = watches.filter(w => w.id !== id);
-    storage.set(STORAGE_KEYS.WATCHES, watches);
-    renderWatches(watches);
-    renderAdminWatches();
-    toast.show('Ceas șters.');
-}
 
 // ========== News Logic ==========
 function loadNews() {
@@ -367,29 +462,6 @@ function initAdminAccess() {
 }
 
 // ========== Admin Panel ==========
-function renderAdminWatches() {
-    const container = document.getElementById('adminWatchesList');
-    if (!container) return;
-    const watches = storage.get(STORAGE_KEYS.WATCHES);
-    container.innerHTML = watches.length === 0
-        ? '<p class="admin-list-empty">Niciun ceas adăugat.</p>'
-        : watches.map(w => `
-            <div class="admin-list-item" data-id="${w.id}">
-                <div class="admin-list-item-info">
-                    <img src="${escapeHtml(w.image)}" alt="" class="admin-list-thumb" onerror="this.style.display='none'">
-                    <div>
-                        <strong>${escapeHtml(w.name)}</strong>
-                        <span>${formatPrice(w.price)} RON</span>
-                    </div>
-                </div>
-                <button type="button" class="btn-delete" data-watch-id="${w.id}" title="Șterge">×</button>
-            </div>
-        `).join('');
-    container.querySelectorAll('.btn-delete[data-watch-id]').forEach(btn => {
-        btn.onclick = () => deleteWatch(btn.dataset.watchId);
-    });
-}
-
 function renderAdminNews() {
     const container = document.getElementById('adminNewsList');
     if (!container) return;
@@ -428,14 +500,10 @@ const admin = {
             if (e.key === 'Escape' && this.overlay?.classList.contains('active')) this.close();
         });
 
-        document.querySelectorAll('.admin-tab').forEach(tab => {
-            tab.addEventListener('click', () => this.switchTab(tab.dataset.tab));
-        });
     },
 
     open() {
         this.overlay?.classList.add('active');
-        renderAdminWatches();
         renderAdminNews();
     },
 
@@ -443,12 +511,6 @@ const admin = {
         this.overlay?.classList.remove('active');
     },
 
-    switchTab(tabName) {
-        document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
-        document.querySelectorAll('.admin-tab-content').forEach(c => {
-            c.classList.toggle('active', c.id === `tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
-        });
-    }
 };
 
 // ========== Cursor Glow ==========
@@ -568,19 +630,6 @@ function initOrderForm() {
     });
 }
 
-function initAddWatchForm() {
-    const form = document.getElementById('addWatchForm');
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const fd = new FormData(form);
-        const data = Object.fromEntries(fd);
-        addWatch(data);
-        form.reset();
-    });
-}
-
 function initAddNewsForm() {
     const form = document.getElementById('addNewsForm');
     if (!form) return;
@@ -640,7 +689,9 @@ function setupView360Drag(imgEl, images = []) {
         wrapper.style.transform = `perspective(800px) rotateY(${rotationY}deg) scale(${scale})`;
         if (hasMultipleImages) {
             const normalized = ((rotationY % 360) + 360) % 360;
-            imgEl.src = normalized < 180 ? images[0] : images[1];
+            const step = 360 / images.length;
+            const idx = Math.min(Math.floor(normalized / step), images.length - 1);
+            imgEl.src = images[idx];
         }
     }
 
@@ -733,7 +784,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initMobileMenu();
     initOrderForm();
-    initAddWatchForm();
     initAddNewsForm();
     initView360Modal();
     initChatIsland();
