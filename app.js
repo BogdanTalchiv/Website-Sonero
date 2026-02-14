@@ -7,7 +7,8 @@
 const STORAGE_KEYS = {
     WATCHES: 'sonero_watches',
     NEWS: 'sonero_news',
-    ORDERS: 'sonero_orders'
+    ORDERS: 'sonero_orders',
+    CART: 'sonero_cart'
 };
 
 // ========== Default Data ==========
@@ -190,21 +191,20 @@ const createWatchCard = (watch) => {
     const div = document.createElement('article');
     div.className = 'watch-card';
     div.setAttribute('data-animate', '');
+    div.dataset.watchId = watch.id;
     const mainImg = watch.images?.[0] || watch.image;
     div.innerHTML = `
-        <div class="watch-card-image-wrap">
-            <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(watch.name)}" class="watch-image" loading="lazy"
-                 onerror="this.src='https://via.placeholder.com/400?text=Sonero'">
-            <button class="watch-360-btn" aria-label="Vizualizare 360°" data-watch-id="${watch.id}">
-                <span class="icon-360">360°</span>
-                <span>Rotire</span>
-            </button>
-        </div>
-        <div class="watch-info">
-            <h3 class="watch-name">${escapeHtml(watch.name)}</h3>
-            <p class="watch-desc">${escapeHtml(watch.desc || '')}</p>
-            <p class="watch-price">${formatPrice(watch.price)} RON</p>
-        </div>
+        <a href="#ceas/${watch.id}" class="watch-card-link">
+            <div class="watch-card-image-wrap">
+                <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(watch.name)}" class="watch-image" loading="lazy"
+                     onerror="this.src='https://via.placeholder.com/400?text=Sonero'">
+            </div>
+            <div class="watch-info">
+                <h3 class="watch-name">${escapeHtml(watch.name)}</h3>
+                <p class="watch-price">${formatPrice(watch.price)} RON</p>
+            </div>
+        </a>
+        <button class="watch-add-cart-btn" data-watch-id="${watch.id}" title="Adaugă în coș" aria-label="Adaugă în coș">+</button>
     `;
     return div;
 };
@@ -281,12 +281,12 @@ function renderWatches(watches) {
 
     watches.forEach((watch, i) => {
         const card = createWatchCard(watch);
-        card.style.transitionDelay = `${i * 0.1}s`;
+        card.style.transitionDelay = `${(i % 6) * 0.08}s`;
         grid.appendChild(card);
     });
 
     observeAnimate();
-    initView360Handlers();
+    initWatchCardHandlers();
 }
 
 
@@ -378,10 +378,13 @@ function observeAnimate() {
 
 // ========== Form Validation ==========
 const validators = {
-    name: (v) => v.length >= 2 || 'Numele trebuie să aibă cel puțin 2 caractere',
-    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Introdu un email valid',
-    phone: (v) => /^0[0-9]{9}$/.test(v.replace(/\s/g, '')) || 'Introdu un număr valid (07xx xxx xxx)',
-    details: (v) => v.length >= 10 || 'Te rugăm să descrii cererea (min. 10 caractere)'
+    name: (v) => v.length >= 2 ? '' : 'Numele trebuie să aibă cel puțin 2 caractere',
+    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Introdu un email valid',
+    phone: (v) => {
+        const digits = v.replace(/[\s\-\(\)]/g, '').replace(/^\+/, '');
+        return /^\d{8,15}$/.test(digits) ? '' : 'Introdu un număr valid (min. 8 cifre, ex: 069123456 sau +373 69 123 456)';
+    },
+    details: (v) => v.length >= 10 ? '' : 'Te rugăm să descrii cererea (min. 10 caractere)'
 };
 
 function validateForm(form, rules) {
@@ -624,9 +627,14 @@ function initOrderForm() {
         };
 
         saveOrder(data);
+        const subject = encodeURIComponent('Comandă personalizată Sonero');
+        const body = encodeURIComponent(
+            `Nume: ${data.name}\nEmail: ${data.email}\nTelefon: ${data.phone}\nTip ceas: ${data.type}\n\nDetalii cerere:\n${data.details}`
+        );
+        window.location.href = `mailto:talchivbogdan03@gmail.com?subject=${subject}&body=${body}`;
         form.reset();
         btn?.classList.remove('loading');
-        toast.show('Cererea ta a fost trimisă! Te vom contacta în curând.');
+        toast.show('Deschide clientul de email pentru a trimite cererea.');
     });
 }
 
@@ -643,103 +651,187 @@ function initAddNewsForm() {
     });
 }
 
-// ========== 360° Product View ==========
-function initView360Handlers() {
-    document.querySelectorAll('.watch-360-btn').forEach(btn => {
+// ========== Image Lightbox ==========
+function openImageLightbox(src, alt) {
+    let overlay = document.getElementById('imageLightbox');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'imageLightbox';
+        overlay.className = 'image-lightbox';
+        overlay.innerHTML = `
+            <button class="lightbox-close" aria-label="Închide">×</button>
+            <img src="" alt="" class="lightbox-img">
+        `;
+        document.body.appendChild(overlay);
+        overlay.querySelector('.lightbox-close').onclick = () => overlay.classList.remove('active');
+        overlay.onclick = (e) => { if (e.target === overlay) overlay.classList.remove('active'); };
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay?.classList.contains('active')) overlay.classList.remove('active');
+        });
+    }
+    overlay.querySelector('.lightbox-img').src = src;
+    overlay.querySelector('.lightbox-img').alt = alt || '';
+    overlay.querySelector('.lightbox-img').onclick = (e) => e.stopPropagation();
+    overlay.classList.add('active');
+}
+
+// ========== Watch Detail Page ==========
+function initWatchDetailPage() {
+    const page = document.getElementById('watchDetailPage');
+    const content = document.getElementById('watchDetailContent');
+    const backBtn = document.getElementById('watchDetailBack');
+
+    function showWatch(watchId) {
+        const watches = storage.get(STORAGE_KEYS.WATCHES);
+        const watch = watches.find(w => w.id === watchId);
+        if (!watch) return;
+        const images = watch.images && watch.images.length ? watch.images : [watch.image];
+        content.innerHTML = `
+            <div class="watch-detail-gallery">
+                ${images.map(img => `<img src="${escapeHtml(img)}" alt="${escapeHtml(watch.name)}" class="watch-gallery-img" onerror="this.src='https://via.placeholder.com/600?text=Sonero'">`).join('')}
+            </div>
+            <div class="watch-detail-info">
+                <h1>${escapeHtml(watch.name)}</h1>
+                <p class="watch-detail-desc">${escapeHtml(watch.desc || '')}</p>
+                <p class="watch-detail-price">${formatPrice(watch.price)} RON</p>
+                <button class="btn btn-primary btn-add-cart" data-watch-id="${watch.id}">Adaugă în coș</button>
+            </div>
+        `;
+        content.querySelector('.btn-add-cart')?.addEventListener('click', () => addToCart(watch.id));
+        content.querySelectorAll('.watch-gallery-img').forEach((img, i) => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', () => openImageLightbox(img.src, watch.name));
+        });
+        page.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideWatch() {
+        page.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function checkHash() {
+        const m = location.hash.match(/^#ceas\/([^/]+)$/);
+        if (m) showWatch(m[1]);
+        else hideWatch();
+    }
+
+    window.addEventListener('hashchange', checkHash);
+    backBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        location.hash = '#ceasuri';
+    });
+    checkHash();
+}
+
+// ========== Watch Card Handlers (Add to cart) ==========
+function initWatchCardHandlers() {
+    document.querySelectorAll('.watch-add-cart-btn').forEach(btn => {
         btn.onclick = (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            openView360(btn.dataset.watchId);
+            addToCart(btn.dataset.watchId);
         };
     });
 }
 
-function openView360(watchId) {
+// ========== Cart ==========
+function getCart() {
+    return storage.get(STORAGE_KEYS.CART, []);
+}
+
+function addToCart(watchId) {
     const watches = storage.get(STORAGE_KEYS.WATCHES);
     const watch = watches.find(w => w.id === watchId);
     if (!watch) return;
-
-    const overlay = document.getElementById('view360Overlay');
-    const img = document.getElementById('view360Image');
-    const info = document.getElementById('view360Info');
-
-    const images = watch.images && watch.images.length >= 2 ? watch.images : [watch.image];
-    img.src = images[0];
-    img.alt = watch.name;
-    info.innerHTML = `
-        <h3>${escapeHtml(watch.name)}</h3>
-        <p>${escapeHtml(watch.desc || '')}</p>
-        <p class="view360-price">${formatPrice(watch.price)} RON</p>
-    `;
-
-    overlay.classList.add('active');
-    setupView360Drag(img, images);
+    const cart = getCart();
+    const existing = cart.find(i => i.id === watchId);
+    if (existing) existing.qty += 1;
+    else cart.push({ id: watch.id, name: watch.name, price: watch.price, image: watch.images?.[0] || watch.image, qty: 1 });
+    storage.set(STORAGE_KEYS.CART, cart);
+    updateCartUI();
+    toast.show('Adăugat în coș!');
 }
 
-function setupView360Drag(imgEl, images = []) {
-    const wrapper = imgEl?.closest('.view360-image-wrapper');
-    if (!wrapper) return;
+function removeFromCart(watchId) {
+    let cart = getCart().filter(i => i.id !== watchId);
+    storage.set(STORAGE_KEYS.CART, cart);
+    updateCartUI();
+}
 
-    let rotationY = 0;
-    let scale = 1;
-    let isDragging = false;
-    let startX = 0, startRotY = 0;
-    const hasMultipleImages = images && images.length >= 2;
+function updateCartUI() {
+    const cart = getCart();
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
 
-    function updateView() {
-        wrapper.style.transform = `perspective(800px) rotateY(${rotationY}deg) scale(${scale})`;
-        if (hasMultipleImages) {
-            const normalized = ((rotationY % 360) + 360) % 360;
-            const step = 360 / images.length;
-            const idx = Math.min(Math.floor(normalized / step), images.length - 1);
-            imgEl.src = images[idx];
-        }
-    }
+    const itemsEl = document.getElementById('cartItems');
+    itemsEl.innerHTML = cart.length === 0
+        ? '<p class="cart-empty">Coșul este gol</p>'
+        : cart.map(item => `
+            <div class="cart-item" data-id="${item.id}">
+                <img src="${escapeHtml(item.image)}" alt="" onerror="this.style.display='none'">
+                <div class="cart-item-info">
+                    <strong>${escapeHtml(item.name)}</strong>
+                    <span>${formatPrice(item.price)} × ${item.qty}</span>
+                </div>
+                <button class="cart-remove" data-id="${item.id}" aria-label="Șterge">×</button>
+            </div>
+        `).join('');
 
-    wrapper.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-        startRotY = rotationY;
+    document.getElementById('cartTotal').textContent = formatPrice(total);
+
+    itemsEl.querySelectorAll('.cart-remove').forEach(btn => {
+        btn.onclick = () => removeFromCart(btn.dataset.id);
     });
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        rotationY = startRotY + (e.clientX - startX);
-        updateView();
-    });
-    document.addEventListener('mouseup', () => { isDragging = false; });
+}
 
-    wrapper.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        startRotY = rotationY;
-    });
-    wrapper.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        rotationY = startRotY + (e.touches[0].clientX - startX);
-        updateView();
-    });
-    wrapper.addEventListener('touchend', () => { isDragging = false; });
+function initCart() {
+    const cartLink = document.getElementById('cartLink');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartClose = document.getElementById('cartClose');
+    const cartCheckout = document.getElementById('cartCheckout');
 
-    const stage = document.getElementById('view360Stage');
-    stage?.addEventListener('wheel', (e) => {
+    cartLink?.addEventListener('click', (e) => {
         e.preventDefault();
-        scale = Math.max(0.5, Math.min(2, scale - e.deltaY * 0.002));
-        updateView();
-    }, { passive: false });
-
-    updateView();
-}
-
-function initView360Modal() {
-    const overlay = document.getElementById('view360Overlay');
-    const closeBtn = document.getElementById('view360Close');
-
-    closeBtn?.addEventListener('click', () => overlay?.classList.remove('active'));
-    overlay?.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.classList.remove('active');
+        cartSidebar?.classList.add('active');
+        cartOverlay?.classList.add('active');
     });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay?.classList.contains('active')) overlay.classList.remove('active');
+
+    const closeCart = () => {
+        cartSidebar?.classList.remove('active');
+        cartOverlay?.classList.remove('active');
+    };
+
+    cartClose?.addEventListener('click', closeCart);
+    cartOverlay?.addEventListener('click', closeCart);
+    cartCheckout?.addEventListener('click', () => {
+        const cart = getCart();
+        if (cart.length === 0) {
+            toast.show('Coșul este gol.', 'error');
+            return;
+        }
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        const details = cart.map(i => `${i.name} x${i.qty} - ${formatPrice(i.price * i.qty)}`).join('\n');
+        const subject = encodeURIComponent('Comandă Sonero - Coș');
+        const body = encodeURIComponent(`Comandă din coș:\n\n${details}\n\nTotal: ${formatPrice(total)} RON`);
+        window.location.href = `mailto:talchivbogdan03@gmail.com?subject=${subject}&body=${body}`;
+        saveOrder({
+            name: 'Client coș',
+            email: '',
+            phone: '',
+            type: 'cos',
+            details: `Comandă din coș:\n${details}\n\nTotal: ${formatPrice(total)} RON`
+        });
+        storage.set(STORAGE_KEYS.CART, []);
+        updateCartUI();
+        closeCart();
+        toast.show('Deschide clientul de email pentru a trimite comanda.');
     });
+
+    updateCartUI();
 }
 
 // ========== Chat Island (Floating) ==========
@@ -785,6 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initOrderForm();
     initAddNewsForm();
-    initView360Modal();
+    initWatchDetailPage();
+    initCart();
     initChatIsland();
 });

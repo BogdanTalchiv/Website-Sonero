@@ -28,6 +28,10 @@
                 <li><a href="#recenzii">Recenzii</a></li>
                 <li><a href="#faq">F&Q</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="#cos" class="cart-link" id="cartLink" title="Coș">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a></li>
                 <li class="admin-nav-item" id="adminNavItem" style="display: none;"><a href="#admin" class="admin-link" data-admin-trigger>Admin</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Meniu">
@@ -71,7 +75,7 @@
                 <h2 class="section-title">Ceasuri de Excepție</h2>
                 <p class="section-desc">Fiecare piesă este o operă de artă, combinând tehnică de ultimă generație cu design atemporal.</p>
             </div>
-            <div class="watches-grid" id="watchesGrid">
+            <div class="watches-collage" id="watchesGrid">
                 <!-- Watches loaded dynamically -->
                 <div class="watches-placeholder" id="watchesPlaceholder">
                     <p>Nu există ceasuri disponibile momentan. Revino curând!</p>
@@ -110,7 +114,7 @@
                         </div>
                         <div class="form-group">
                             <label for="orderPhone">Telefon *</label>
-                            <input type="tel" id="orderPhone" name="phone" required placeholder="07xx xxx xxx"
+                            <input type="tel" id="orderPhone" name="phone" required placeholder="+373 69 123 456 sau 069123456"
                                 autocomplete="tel">
                             <span class="form-error" data-error="phone"></span>
                         </div>
@@ -234,10 +238,10 @@
                 <p class="section-desc">Ai întrebări despre ceasuri? Vrei să comanzi sau să afli mai multe? Contactează-ne oricând.</p>
             </div>
             <div class="contact-grid">
-                <a href="mailto:contact@sonero.ro" class="contact-card">
+                <a href="mailto:sonerisonero@gmail.com" class="contact-card">
                     <span class="contact-icon">✉</span>
                     <h3>Email</h3>
-                    <p>contact@sonero.ro</p>
+                    <p>sonerisonero@gmail.com</p>
                 </a>
                 <a href="https://t.me/soneromd" target="_blank" rel="noopener" class="contact-card">
                     <span class="contact-icon">
@@ -270,21 +274,23 @@
         </div>
     </div>
 
-    <!-- 360° Product View Modal -->
-    <div class="view360-overlay" id="view360Overlay">
-        <div class="view360-modal">
-            <button class="view360-close" id="view360Close" aria-label="Închide">×</button>
-            <div class="view360-container">
-                <div class="view360-stage" id="view360Stage">
-                    <div class="view360-image-wrapper" id="view360ImageWrapper">
-                        <img id="view360Image" src="" alt="">
-                    </div>
-                </div>
-                <div class="view360-controls">
-                    <span class="view360-hint">← Rotire: drag | Zoom: scroll</span>
-                </div>
-            </div>
-            <div class="view360-info" id="view360Info"></div>
+    <!-- Watch Detail Page -->
+    <div class="watch-detail-page" id="watchDetailPage">
+        <a href="#ceasuri" class="watch-detail-back" id="watchDetailBack">← Înapoi</a>
+        <div class="watch-detail-content" id="watchDetailContent"></div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Coșul tău</h3>
+            <button class="cart-close" id="cartClose" aria-label="Închide">×</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <p class="cart-total">Total: <strong id="cartTotal">0</strong> RON</p>
+            <button class="btn btn-primary btn-full" id="cartCheckout">Finalizează comanda</button>
         </div>
     </div>
 
@@ -330,6 +336,8 @@
         </div>
     </div>
 
+    <!-- Image Lightbox (created by JS) -->
+
     <!-- Toast Notifications -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -350,7 +358,7 @@
                     <a href="#contact">Contact</a>
                 </div>
                 <div class="footer-contact">
-                    <a href="mailto:contact@sonero.ro" class="footer-contact-link">contact@sonero.ro</a>
+                    <a href="mailto:sonerisonero@gmail.com" class="footer-contact-link">sonerisonero@gmail.com</a>
                     <a href="tel:+37361081424" class="footer-contact-link">+373 610 81 424</a>
                 </div>
             </div>
